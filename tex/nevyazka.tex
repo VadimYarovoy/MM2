@@ -1,0 +1,385 @@
+Перед началом решения исследуем невязку полученной разностной схемы.
+На правой границе, включая угловые точки, разностная схема описывает
+дифференциальное уравнение (\ref{main-equation}) точно. Выведем выражение
+для невязки для внутренних точек сетки и \textit{только для левой границы и левой
+нижней граничной точки}: для оставшихся двух границ и одной граничной точки
+выражение для невязки может быть получено аналогичным образом.
+
+\subsection{Невязка во внутренних точках}
+Для уравнения разностной схемы во внутренних точках сетки
+\begin{multline*}
+    - \left[
+    h_y k_1(x_{i+1/2},y_{j}) \frac{v_{i+1,j} - v_{i,j}}{h_x} - h_y k_1(x_{i-1/2},y_{j}) \frac{v_{i,j} - v_{i-1,j}}{h_x} + \right. \\
+    \left. +
+    h_x k_2(x_{i},y_{j+1/2}) \frac{v_{i,j+1} - v_{i,j}}{h_y} - h_x k_2(x_{i},y_{j-1/2}) \frac{v_{i,j} - v_{i,j-1}}{h_y}
+    \right] =
+    h_x h_y f_{i,j}
+\end{multline*}
+запишем невязку
+\begin{multline*}
+    \xi_{i,j} = h_x h_y f_{i,j} + \left[
+    h_y k_1(x_{i+1/2},y_{j}) \frac{u_{i+1,j} - u_{i,j}}{h_x} - h_y k_1(x_{i-1/2},y_{j}) \frac{u_{i,j} - u_{i-1,j}}{h_x} + \right. \\
+    \left. +
+    h_x k_2(x_{i},y_{j+1/2}) \frac{u_{i,j+1} - u_{i,j}}{h_y} - h_x k_2(x_{i},y_{j-1/2}) \frac{u_{i,j} - u_{i,j-1}}{h_y}
+    \right]
+\end{multline*}
+Напишем разложение Тейлора для невязки.
+\[
+    u_{i,j-1} = u(x_{i}, y_{j} - h_y) = \left[ u - h_y \pdv{u}{y} + \frac{h_y^2}{2} \pdv[2]{u}{y} -
+    \frac{h_y^3}{6} \pdv[3]{u}{y} + \frac{h_y^4}{24} \pdv[4]{u}{y} \right]_{i,j} + O(h_y^5)
+\]
+\[
+    \frac{u_{i,j} - u_{i,j-1}}{h_y} = \left[ \pdv{u}{y} - \frac{h_y}{2} \pdv[2]{u}{y} +
+    \frac{h_y^2}{6} \pdv[3]{u}{y} - \frac{h_y^3}{24} \pdv[4]{u}{y} \right]_{i,j} + O(h_y^4)
+\]
+\[
+    k_2(x_{i},y_{j-1/2}) = k_2 \left( x_{i},y_{j} - \frac{h_y}{2} \right) = \left[
+        k_2 - \frac{h_y}{2} \pdv{k_2}{y} + \frac{h_y^2}{8} \pdv[2]{k_2}{y} - \frac{h_y^3}{48} \pdv[3]{k_2}{y}
+    \right]_{i,j} + O(h_y^4)
+\]
+\begin{multline*}
+    k_2(x_{i},y_{j-1/2}) \frac{u_{i,j} - u_{i,j-1}}{h_y} = \left[ k_2 \pdv{u}{y} \right]_{i,j} -
+    h_y \left[ \frac{1}{2} k_2 \pdv[2]{u}{y} + \frac{1}{2} \pdv{k_2}{y} \pdv{u}{y} \right]_{i,j} + \\
+    + h_y^2 \left[ \frac{1}{6} k_2 \pdv[3]{u}{y} + \frac{1}{4} \pdv{k_2}{y} \pdv[2]{u}{y} + \frac{1}{8} \pdv[2]{k_2}{y} \pdv{u}{y} \right]_{i,j} - \\
+    - h_y^3 \left[ \frac{1}{24} k_2 \pdv[4]{u}{y} + \frac{1}{12} \pdv{k_2}{y} \pdv[3]{u}{y} + \frac{1}{16} \pdv[2]{k_2}{y} \pdv[2]{u}{y} + \frac{1}{48} \pdv[3]{k_2}{y} \pdv{u}{y} \right]_{i,j} + O(h_y^4)
+\end{multline*}
+
+\[
+    u_{i-1,j} = u(x_{i} - h_x, y_{j}) = \left[ u - h_x \pdv{u}{x} + \frac{h_x^2}{2} \pdv[2]{u}{x} -
+    \frac{h_x^3}{6} \pdv[3]{u}{x} + \frac{h_x^4}{24} \pdv[4]{u}{x} \right]_{i,j} + O(h_x^5)
+\]
+\[
+    \frac{u_{i,j} - u_{i-1,j}}{h_x} = \left[ \pdv{u}{x} - \frac{h_x}{2} \pdv[2]{u}{x} +
+    \frac{h_x^2}{6} \pdv[3]{u}{x} - \frac{h_x^3}{24} \pdv[4]{u}{x} \right]_{i,j} + O(h_x^4)
+\]
+\[
+    k_1(x_{i-1/2},y_{j}) = k_1 \left( x_{i} - \frac{h_x}{2},y_{j} \right) = \left[
+        k_1 - \frac{h_x}{2} \pdv{k_1}{x} + \frac{h_x^2}{8} \pdv[2]{k_1}{x} - \frac{h_x^3}{48} \pdv[3]{k_1}{x}
+    \right]_{i,j} + O(h_x^4)
+\]
+\begin{multline*}
+    k_1(x_{i-1/2},y_{j}) \frac{u_{i,j} - u_{i-1,j}}{h_x} = \left[ k_1 \pdv{u}{x} \right]_{i,j} -
+    h_x \left[ \frac{1}{2} k_1 \pdv[2]{u}{x} + \frac{1}{2} \pdv{k_1}{x} \pdv{u}{x} \right]_{i,j} + \\
+    + h_x^2 \left[ \frac{1}{6} k_1 \pdv[3]{u}{x} + \frac{1}{4} \pdv{k_1}{x} \pdv[2]{u}{x} + \frac{1}{8} \pdv[2]{k_1}{x} \pdv{u}{x} \right]_{i,j} - \\
+    - h_x^3 \left[ \frac{1}{24} k_1 \pdv[4]{u}{x} + \frac{1}{12} \pdv{k_1}{x} \pdv[3]{u}{x} + \frac{1}{16} \pdv[2]{k_1}{x} \pdv[2]{u}{x} + \frac{1}{48} \pdv[3]{k_1}{x} \pdv{u}{x} \right]_{i,j} + O(h_x^4)
+\end{multline*}
+
+\[
+    u_{i+1,j} = u(x_{i} + h_x, y_{j}) = \left[ u + h_x \pdv{u}{x} + \frac{h_x^2}{2} \pdv[2]{u}{x} +
+    \frac{h_x^3}{6} \pdv[3]{u}{x} + \frac{h_x^4}{24} \pdv[4]{u}{x} \right]_{i,j} + O(h_x^5)
+\]
+\[
+    \frac{u_{i+1,j} - u_{i,j}}{h_x} = \left[ \pdv{u}{x} + \frac{h_x}{2} \pdv[2]{u}{x} +
+    \frac{h_x^2}{6} \pdv[3]{u}{x} + \frac{h_x^3}{24} \pdv[4]{u}{x} \right]_{i,j} + O(h_x^4)
+\]
+\[
+    k_1(x_{i+1/2},y_{j}) = k_1 \left( x_{i} + \frac{h_x}{2},y_{j} \right) = \left[
+        k_1 + \frac{h_x}{2} \pdv{k_1}{x} + \frac{h_x^2}{8} \pdv[2]{k_1}{x} + \frac{h_x^3}{48} \pdv[3]{k_1}{x}
+    \right]_{i,j} + O(h_x^4)
+\]
+\begin{multline*}
+    k_1(x_{i+1/2},y_{j}) \frac{u_{i+1,j} - u_{i,j}}{h_x} = \left[ k_1 \pdv{u}{x} \right]_{i,j} +
+    h_x \left[ \frac{1}{2} k_1 \pdv[2]{u}{x} + \frac{1}{2} \pdv{k_1}{x} \pdv{u}{x} \right]_{i,j} + \\
+    + h_x^2 \left[ \frac{1}{6} k_1 \pdv[3]{u}{x} + \frac{1}{4} \pdv{k_1}{x} \pdv[2]{u}{x} + \frac{1}{8} \pdv[2]{k_1}{x} \pdv{u}{x} \right]_{i,j} + \\
+    + h_x^3 \left[ \frac{1}{24} k_1 \pdv[4]{u}{x} + \frac{1}{12} \pdv{k_1}{x} \pdv[3]{u}{x} + \frac{1}{16} \pdv[2]{k_1}{x} \pdv[2]{u}{x} + \frac{1}{48} \pdv[3]{k_1}{x} \pdv{u}{x} \right]_{i,j} + O(h_x^4)
+\end{multline*}
+
+\[
+    u_{i,j+1} = u(x_{i}, y_{j} + h_y) = \left[ u + h_y \pdv{u}{y} + \frac{h_y^2}{2} \pdv[2]{u}{y} +
+    \frac{h_y^3}{6} \pdv[3]{u}{y} + \frac{h_y^4}{24} \pdv[4]{u}{y} \right]_{i,j} + O(h_y^5)
+\]
+\[
+    \frac{u_{i,j+1} - u_{i,j}}{h_y} = \left[ \pdv{u}{y} + \frac{h_y}{2} \pdv[2]{u}{y} +
+    \frac{h_y^2}{6} \pdv[3]{u}{y} + \frac{h_y^3}{24} \pdv[4]{u}{y} \right]_{i,j} + O(h_y^4)
+\]
+\[
+    k_2(x_{i},y_{j+1/2}) = k_2 \left( x_{i},y_{j} + \frac{h_y}{2} \right) = \left[
+        k_2 + \frac{h_y}{2} \pdv{k_2}{y} + \frac{h_y^2}{8} \pdv[2]{k_2}{y} + \frac{h_y^3}{48} \pdv[3]{k_2}{y}
+    \right]_{i,j} + O(h_y^4)
+\]
+\begin{multline*}
+    k_2(x_{i},y_{j+1/2}) \frac{u_{i,j+1} - u_{i,j}}{h_y} = \left[ k_2 \pdv{u}{y} \right]_{i,j} +
+    h_y \left[ \frac{1}{2} k_2 \pdv[2]{u}{y} + \frac{1}{2} \pdv{k_2}{y} \pdv{u}{y} \right]_{i,j} + \\
+    + h_y^2 \left[ \frac{1}{6} k_2 \pdv[3]{u}{y} + \frac{1}{4} \pdv{k_2}{y} \pdv[2]{u}{y} + \frac{1}{8} \pdv[2]{k_2}{y} \pdv{u}{y} \right]_{i,j} + \\
+    + h_y^3 \left[ \frac{1}{24} k_2 \pdv[4]{u}{y} + \frac{1}{12} \pdv{k_2}{y} \pdv[3]{u}{y} + \frac{1}{16} \pdv[2]{k_2}{y} \pdv[2]{u}{y} + \frac{1}{48} \pdv[3]{k_2}{y} \pdv{u}{y} \right]_{i,j} + O(h_y^4)
+\end{multline*}
+Получаем следующее разложение.
+\begin{multline*}
+    h_y k_1(x_{i+1/2},y_{j}) \frac{v_{i+1,j} - v_{i,j}}{h_x} - h_y k_1(x_{i-1/2},y_{j}) \frac{v_{i,j} - v_{i-1,j}}{h_x} = \\
+    = h_y \left[ \begin{aligned}
+        & h_x \left[ k_1 \pdv[2]{u}{x} + \pdv{k_1}{x} \pdv{u}{x} \right]_{i,j} + \\
+        & + h_x^3 \left[ \frac{1}{12} k_1 \pdv[4]{u}{x} + \frac{1}{6} \pdv{k_1}{x} \pdv[3]{u}{x} + \frac{1}{8} \pdv[2]{k_1}{x} \pdv[2]{u}{x} + \frac{1}{24} \pdv[3]{k_1}{x} \pdv{u}{x} \right]_{i,j} + O(h_x^4)
+    \end{aligned} \right]
+\end{multline*}
+\begin{multline*}
+    h_x k_2(x_{i},y_{j+1/2}) \frac{v_{i,j+1} - v_{i,j}}{h_y} - h_x k_2(x_{i},y_{j-1/2}) \frac{v_{i,j} - v_{i,j-1}}{h_y} = \\
+    = h_x \left[ \begin{aligned}
+        & h_y \left[ k_2 \pdv[2]{u}{y} + \pdv{k_2}{y} \pdv{u}{y} \right]_{i,j} + \\
+        & + h_y^3 \left[ \frac{1}{12} k_2 \pdv[4]{u}{y} + \frac{1}{6} \pdv{k_2}{y} \pdv[3]{u}{y} + \frac{1}{8} \pdv[2]{k_2}{y} \pdv[2]{u}{y} + \frac{1}{24} \pdv[3]{k_2}{y} \pdv{u}{y} \right]_{i,j} + O(h_y^4)
+    \end{aligned} \right]
+\end{multline*}
+Будем искать невзяку в следующем виде
+\[
+    \tilde{\xi}_{i,j} = \frac{\xi_{i,j}}{h_x h_y}
+\]
+\[
+    \tilde{\xi}_{i,j} = f_{i,j} +
+    \left[
+    \begin{aligned}
+        & \left[ k_1 \pdv[2]{u}{x} + \pdv{k_1}{x} \pdv{u}{x} \right]_{i,j} + \\
+        & + h_x^2 \left[ \frac{1}{12} k_1 \pdv[4]{u}{x} + \frac{1}{6} \pdv{k_1}{x} \pdv[3]{u}{x} + \frac{1}{8} \pdv[2]{k_1}{x} \pdv[2]{u}{x} + \frac{1}{24} \pdv[3]{k_1}{x} \pdv{u}{x} \right]_{i,j} + O(h_x^3) + \\
+        & + \left[ k_2 \pdv[2]{u}{y} + \pdv{k_2}{y} \pdv{u}{y} \right]_{i,j} + \\
+        & + h_y^2 \left[ \frac{1}{12} k_2 \pdv[4]{u}{y} + \frac{1}{6} \pdv{k_2}{y} \pdv[3]{u}{y} + \frac{1}{8} \pdv[2]{k_2}{y} \pdv[2]{u}{y} + \frac{1}{24} \pdv[3]{k_2}{y} \pdv{u}{y} \right]_{i,j} + O(h_y^3)
+    \end{aligned}
+    \right]
+\]
+Заметим, что
+\[ k_1 \pdv[2]{u}{x} + \pdv{k_1}{x} \pdv{u}{x} = \pdv{x} \left( k_1 \pdv{u}{x} \right) \]
+\[ k_2 \pdv[2]{u}{y} + \pdv{k_2}{y} \pdv{u}{y} = \pdv{y} \left( k_2 \pdv{u}{y} \right) \]
+Тогда
+\[
+    \begin{split}
+        \tilde{\xi}_{i,j} &= \cancelto{0}{\left[ f + \pdv{x} \left( k_1 \pdv{u}{x} \right) + \pdv{y} \left( k_2 \pdv{u}{y} \right) \right]_{i,j}} + \\
+        &+ \left[
+        \begin{aligned}
+            & h_x^2 \left[ \frac{1}{12} k_1 \pdv[4]{u}{x} + \frac{1}{6} \pdv{k_1}{x} \pdv[3]{u}{x} + \frac{1}{8} \pdv[2]{k_1}{x} \pdv[2]{u}{x} + \frac{1}{24} \pdv[3]{k_1}{x} \pdv{u}{x} \right]_{i,j} + O(h_x^3) + \\
+            & + h_y^2 \left[ \frac{1}{12} k_2 \pdv[4]{u}{y} + \frac{1}{6} \pdv{k_2}{y} \pdv[3]{u}{y} + \frac{1}{8} \pdv[2]{k_2}{y} \pdv[2]{u}{y} + \frac{1}{24} \pdv[3]{k_2}{y} \pdv{u}{y} \right]_{i,j} + O(h_y^3)
+        \end{aligned}
+        \right]
+    \end{split}
+\]
+И порядок аппроксимации $p_x = 2 - 0 = 2$, $p_y = 2 - 0 = 2$.
+
+\subsection{Невязка на левой границе}
+Для уравнения разностной схемы на левой границе сетки
+\begin{multline*}
+    - \left[
+    h_y k_1(x_{1/2},y_{j}) \frac{v_{1,j} - v_{0,j}}{h_x} - h_y \left( \chi_1 v_{0,j} - g_1(y_{j}) \right) + \right. \\
+    \left. +
+    \frac{h_x}{2} k_2(x_{0},y_{j+1/2}) \frac{v_{0,j+1} - v_{0,j}}{h_y} - \frac{h_x}{2} k_2(x_{0},y_{j-1/2}) \frac{v_{0,j} - v_{0,j-1}}{h_y}
+    \right] =
+    \frac{h_x}{2} h_y f_{0,j}
+\end{multline*}
+запишем невязку
+\begin{multline*}
+    \xi_{0,j} = \frac{h_x}{2} h_y f_{0,j} + \left[
+    h_y k_1(x_{1/2},y_{j}) \frac{u_{1,j} - u_{0,j}}{h_x} - h_y \left( \chi_1 u_{0,j} - g_1(y_{j}) \right) + \right. \\
+    \left. +
+    \frac{h_x}{2} k_2(x_{0},y_{j+1/2}) \frac{u_{0,j+1} - u_{0,j}}{h_y} - \frac{h_x}{2} k_2(x_{0},y_{j-1/2}) \frac{u_{0,j} - u_{0,j-1}}{h_y}
+    \right]
+\end{multline*}
+Напишем разложение Тейлора для невязки.
+\[
+    u_{0,j-1} = u(x_{0}, y_{j} - h_y) = \left[ u - h_y \pdv{u}{y} + \frac{h_y^2}{2} \pdv[2]{u}{y} -
+    \frac{h_y^3}{6} \pdv[3]{u}{y} + \frac{h_y^4}{24} \pdv[4]{u}{y} \right]_{0,j} + O(h_y^5)
+\]
+\[
+    \frac{u_{0,j} - u_{0,j-1}}{h_y} = \left[ \pdv{u}{y} - \frac{h_y}{2} \pdv[2]{u}{y} +
+    \frac{h_y^2}{6} \pdv[3]{u}{y} - \frac{h_y^3}{24} \pdv[4]{u}{y} \right]_{0,j} + O(h_y^4)
+\]
+\[
+    k_2(x_{0},y_{j-1/2}) = k_2 \left( x_{0},y_{j} - \frac{h_y}{2} \right) = \left[
+        k_2 - \frac{h_y}{2} \pdv{k_2}{y} + \frac{h_y^2}{8} \pdv[2]{k_2}{y} - \frac{h_y^3}{48} \pdv[3]{k_2}{y}
+    \right]_{0,j} + O(h_y^4)
+\]
+\begin{multline*}
+    k_2(x_{0},y_{j-1/2}) \frac{u_{0,j} - u_{0,j-1}}{h_y} = \left[ k_2 \pdv{u}{y} \right]_{0,j} -
+    h_y \left[ \frac{1}{2} k_2 \pdv[2]{u}{y} + \frac{1}{2} \pdv{k_2}{y} \pdv{u}{y} \right]_{0,j} + \\
+    + h_y^2 \left[ \frac{1}{6} k_2 \pdv[3]{u}{y} + \frac{1}{4} \pdv{k_2}{y} \pdv[2]{u}{y} + \frac{1}{8} \pdv[2]{k_2}{y} \pdv{u}{y} \right]_{0,j} - \\
+    - h_y^3 \left[ \frac{1}{24} k_2 \pdv[4]{u}{y} + \frac{1}{12} \pdv{k_2}{y} \pdv[3]{u}{y} + \frac{1}{16} \pdv[2]{k_2}{y} \pdv[2]{u}{y} + \frac{1}{48} \pdv[3]{k_2}{y} \pdv{u}{y} \right]_{0,j} + O(h_y^4)
+\end{multline*}
+
+\[
+    u_{1,j} = u(x_{0} + h_x, y_{j}) = \left[ u + h_x \pdv{u}{x} + \frac{h_x^2}{2} \pdv[2]{u}{x} +
+    \frac{h_x^3}{6} \pdv[3]{u}{x} + \frac{h_x^4}{24} \pdv[4]{u}{x} \right]_{0,j} + O(h_x^5)
+\]
+\[
+    \frac{u_{1,j} - u_{0,j}}{h_x} = \left[ \pdv{u}{x} + \frac{h_x}{2} \pdv[2]{u}{x} +
+    \frac{h_x^2}{6} \pdv[3]{u}{x} + \frac{h_x^3}{24} \pdv[4]{u}{x} \right]_{0,j} + O(h_x^4)
+\]
+\[
+    k_1(x_{1/2},y_{j}) = k_1 \left( x_{0} + \frac{h_x}{2},y_{j} \right) = \left[
+        k_1 + \frac{h_x}{2} \pdv{k_1}{x} + \frac{h_x^2}{8} \pdv[2]{k_1}{x} + \frac{h_x^3}{48} \pdv[3]{k_1}{x}
+    \right]_{0,j} + O(h_x^4)
+\]
+\begin{multline*}
+    k_1(x_{1/2},y_{j}) \frac{u_{1,j} - u_{0,j}}{h_x} = \left[ k_1 \pdv{u}{x} \right]_{0,j} +
+    h_x \left[ \frac{1}{2} k_1 \pdv[2]{u}{x} + \frac{1}{2} \pdv{k_1}{x} \pdv{u}{x} \right]_{0,j} + \\
+    + h_x^2 \left[ \frac{1}{6} k_1 \pdv[3]{u}{x} + \frac{1}{4} \pdv{k_1}{x} \pdv[2]{u}{x} + \frac{1}{8} \pdv[2]{k_1}{x} \pdv{u}{x} \right]_{0,j} + \\
+    + h_x^3 \left[ \frac{1}{24} k_1 \pdv[4]{u}{x} + \frac{1}{12} \pdv{k_1}{x} \pdv[3]{u}{x} + \frac{1}{16} \pdv[2]{k_1}{x} \pdv[2]{u}{x} + \frac{1}{48} \pdv[3]{k_1}{x} \pdv{u}{x} \right]_{0,j} + O(h_x^4)
+\end{multline*}
+
+\[
+    u_{0,j+1} = u(x_{0}, y_{j} + h_y) = \left[ u + h_y \pdv{u}{y} + \frac{h_y^2}{2} \pdv[2]{u}{y} +
+    \frac{h_y^3}{6} \pdv[3]{u}{y} + \frac{h_y^4}{24} \pdv[4]{u}{y} \right]_{0,j} + O(h_y^5)
+\]
+\[
+    \frac{u_{0,j+1} - u_{0,j}}{h_y} = \left[ \pdv{u}{y} + \frac{h_y}{2} \pdv[2]{u}{y} +
+    \frac{h_y^2}{6} \pdv[3]{u}{y} + \frac{h_y^3}{24} \pdv[4]{u}{y} \right]_{0,j} + O(h_y^4)
+\]
+\[
+    k_2(x_{0},y_{j+1/2}) = k_2 \left( x_{0},y_{j} + \frac{h_y}{2} \right) = \left[
+        k_2 + \frac{h_y}{2} \pdv{k_2}{y} + \frac{h_y^2}{8} \pdv[2]{k_2}{y} + \frac{h_y^3}{48} \pdv[3]{k_2}{y}
+    \right]_{0,j} + O(h_y^4)
+\]
+\begin{multline*}
+    k_2(x_{0},y_{j+1/2}) \frac{u_{0,j+1} - u_{0,j}}{h_y} = \left[ k_2 \pdv{u}{y} \right]_{0,j} +
+    h_y \left[ \frac{1}{2} k_2 \pdv[2]{u}{y} + \frac{1}{2} \pdv{k_2}{y} \pdv{u}{y} \right]_{0,j} + \\
+    + h_y^2 \left[ \frac{1}{6} k_2 \pdv[3]{u}{y} + \frac{1}{4} \pdv{k_2}{y} \pdv[2]{u}{y} + \frac{1}{8} \pdv[2]{k_2}{y} \pdv{u}{y} \right]_{0,j} + \\
+    + h_y^3 \left[ \frac{1}{24} k_2 \pdv[4]{u}{y} + \frac{1}{12} \pdv{k_2}{y} \pdv[3]{u}{y} + \frac{1}{16} \pdv[2]{k_2}{y} \pdv[2]{u}{y} + \frac{1}{48} \pdv[3]{k_2}{y} \pdv{u}{y} \right]_{0,j} + O(h_y^4)
+\end{multline*}
+
+Получаем следующее разложение.
+\begin{multline*}
+    h_y k_1(x_{1/2},y_{j}) \frac{u_{1,j} - u_{0,j}}{h_x} - h_y \left( \chi_1 u_{0,j} - g_1(y_{j}) \right) = \\
+    = h_y \left[ \begin{aligned}
+        & \left[ k_1 \pdv{u}{x} \right]_{0,j} +
+        h_x \left[ \frac{1}{2} k_1 \pdv[2]{u}{x} + \frac{1}{2} \pdv{k_1}{x} \pdv{u}{x} \right]_{0,j} + \\
+        & + h_x^2 \left[ \frac{1}{6} k_1 \pdv[3]{u}{x} + \frac{1}{4} \pdv{k_1}{x} \pdv[2]{u}{x} + \frac{1}{8} \pdv[2]{k_1}{x} \pdv{u}{x} \right]_{0,j} + \\
+        & + h_x^3 \left[ \frac{1}{24} k_1 \pdv[4]{u}{x} + \frac{1}{12} \pdv{k_1}{x} \pdv[3]{u}{x} + \frac{1}{16} \pdv[2]{k_1}{x} \pdv[2]{u}{x} + \frac{1}{48} \pdv[3]{k_1}{x} \pdv{u}{x} \right]_{0,j} + O(h_x^4) - \\
+        & - \left( \chi_1 u_{0,j} - g_1(y_{j}) \right)
+    \end{aligned} \right]
+\end{multline*}
+\begin{multline*}
+    \frac{h_x}{2} k_2(x_{0},y_{j+1/2}) \frac{u_{0,j+1} - u_{0,j}}{h_y} - \frac{h_x}{2} k_2(x_{0},y_{j-1/2}) \frac{u_{0,j} - u_{0,j-1}}{h_y} = \\
+    = \frac{h_x}{2} \left[ \begin{aligned}
+        & h_y \left[ k_2 \pdv[2]{u}{y} + \pdv{k_2}{y} \pdv{u}{y} \right]_{0,j} + \\
+        & + h_y^3 \left[ \frac{1}{12} k_2 \pdv[4]{u}{y} + \frac{1}{6} \pdv{k_2}{y} \pdv[3]{u}{y} + \frac{1}{8} \pdv[2]{k_2}{y} \pdv[2]{u}{y} + \frac{1}{24} \pdv[3]{k_2}{y} \pdv{u}{y} \right]_{0,j} + O(h_y^4)
+    \end{aligned} \right]
+\end{multline*}
+Будем искать невзяку в следующем виде
+\[
+    \tilde{\xi}_{i,j} = \frac{\xi_{i,j}}{h_y}
+\]
+\begin{multline*}
+    \tilde{\xi}_{i,j} = \frac{h_x}{2} f_{i,j} + \left( \chi_1 u_{0,j} - g_1(y_{j}) \right) + \\
+    \left[
+    \begin{aligned}
+        & \left[ k_1 \pdv{u}{x} \right]_{0,j} +
+        h_x \left[ \frac{1}{2} k_1 \pdv[2]{u}{x} + \frac{1}{2} \pdv{k_1}{x} \pdv{u}{x} \right]_{0,j} + \\
+        & + h_x^2 \left[ \frac{1}{6} k_1 \pdv[3]{u}{x} + \frac{1}{4} \pdv{k_1}{x} \pdv[2]{u}{x} + \frac{1}{8} \pdv[2]{k_1}{x} \pdv{u}{x} \right]_{0,j} + \\
+        & + h_x^3 \left[ \frac{1}{24} k_1 \pdv[4]{u}{x} + \frac{1}{12} \pdv{k_1}{x} \pdv[3]{u}{x} + \frac{1}{16} \pdv[2]{k_1}{x} \pdv[2]{u}{x} + \frac{1}{48} \pdv[3]{k_1}{x} \pdv{u}{x} \right]_{0,j} + O(h_x^4) + \\
+        & + \frac{h_x}{2} \left[ k_2 \pdv[2]{u}{y} + \pdv{k_2}{y} \pdv{u}{y} \right]_{0,j} + \\
+        & + \frac{h_x}{2} h_y^2 \left[ \frac{1}{12} k_2 \pdv[4]{u}{y} + \frac{1}{6} \pdv{k_2}{y} \pdv[3]{u}{y} + \frac{1}{8} \pdv[2]{k_2}{y} \pdv[2]{u}{y} + \frac{1}{24} \pdv[3]{k_2}{y} \pdv{u}{y} \right]_{0,j} + O(h_y^4)
+    \end{aligned}
+    \right]
+\end{multline*}
+Заметим, что
+\[ k_1 \pdv[2]{u}{x} + \pdv{k_1}{x} \pdv{u}{x} = \pdv{x} \left( k_1 \pdv{u}{x} \right) \]
+\[ k_2 \pdv[2]{u}{y} + \pdv{k_2}{y} \pdv{u}{y} = \pdv{y} \left( k_2 \pdv{u}{y} \right) \]
+Тогда
+\[
+    \begin{split}
+        \tilde{\xi}_{i,j} &= \frac{h_x}{2} \cancelto{0}{\left[ f + \pdv{x} \left( k_1 \pdv{u}{x} \right) + \pdv{y} \left( k_2 \pdv{u}{y} \right) \right]_{0,j}} + \cancelto{0}{\left[ k_1 \pdv{u}{x} + \left( \chi_1 u - g_1(y_{j}) \right) \right]_{0,j}} + \\
+        &+ \left[
+        \begin{aligned}
+            & h_x^2 \left[ \frac{1}{6} k_1 \pdv[3]{u}{x} + \frac{1}{4} \pdv{k_1}{x} \pdv[2]{u}{x} + \frac{1}{8} \pdv[2]{k_1}{x} \pdv{u}{x} \right]_{0,j} + \\
+            & + h_x^3 \left[ \frac{1}{24} k_1 \pdv[4]{u}{x} + \frac{1}{12} \pdv{k_1}{x} \pdv[3]{u}{x} + \frac{1}{16} \pdv[2]{k_1}{x} \pdv[2]{u}{x} + \frac{1}{48} \pdv[3]{k_1}{x} \pdv{u}{x} \right]_{0,j} + O(h_x^4) + \\
+            & + \frac{h_x}{2} h_y^2 \left[ \frac{1}{12} k_2 \pdv[4]{u}{y} + \frac{1}{6} \pdv{k_2}{y} \pdv[3]{u}{y} + \frac{1}{8} \pdv[2]{k_2}{y} \pdv[2]{u}{y} + \frac{1}{24} \pdv[3]{k_2}{y} \pdv{u}{y} \right]_{0,j} + O(h_y^4)
+        \end{aligned}
+        \right]
+    \end{split}
+\]
+И порядок аппроксимации $p_x = 2 - 0 = 2$, $p_y = 2 - 0 = 2$.
+
+\subsection{Невязка в левой нижней граничной точке}
+Для уравнения разностной схемы в левой нижней граничной точке сетки
+\begin{multline*}
+    - \left[
+    \frac{h_y}{2}  k_1(x_{1/2},y_{0}) \frac{v_{1,0} - v_{0,0}}{h_x} - \frac{h_y}{2} \left( \chi_1 v_{0,0} - g_1(y_{0}) \right) + \right. \\
+    \left. +
+    \frac{h_x}{2}  k_2(x_{0},y_{1/2}) \frac{v_{0,1} - v_{0,0}}{h_y} - \frac{h_x}{2} \left( \chi_3 v_{0,0} - g_3(x_{0}) \right)
+    \right] =
+    \frac{h_x}{2} \frac{h_y}{2} f_{0,0}
+\end{multline*}
+запишем невязку
+\begin{multline*}
+    \xi_{0,0} = \frac{h_x}{2} \frac{h_y}{2} f_{0,0} + \left[
+    \frac{h_y}{2}  k_1(x_{1/2},y_{0}) \frac{v_{1,0} - v_{0,0}}{h_x} - \frac{h_y}{2} \left( \chi_1 v_{0,0} - g_1(y_{0}) \right) + \right. \\
+    \left. +
+    \frac{h_x}{2}  k_2(x_{0},y_{1/2}) \frac{v_{0,1} - v_{0,0}}{h_y} - \frac{h_x}{2} \left( \chi_3 v_{0,0} - g_3(x_{0}) \right)
+    \right]
+\end{multline*}
+Напишем разложение Тейлора для невязки.
+\[
+    u_{1,0} = u(x_{0} + h_x, y_{0}) = \left[ u + h_x \pdv{u}{x} + \frac{h_x^2}{2} \pdv[2]{u}{x} +
+    \frac{h_x^3}{6} \pdv[3]{u}{x} + \frac{h_x^4}{24} \pdv[4]{u}{x} \right]_{0,0} + O(h_x^5)
+\]
+\[
+    \frac{u_{1,0} - u_{0,0}}{h_x} = \left[ \pdv{u}{x} + \frac{h_x}{2} \pdv[2]{u}{x} +
+    \frac{h_x^2}{6} \pdv[3]{u}{x} + \frac{h_x^3}{24} \pdv[4]{u}{x} \right]_{0,0} + O(h_x^4)
+\]
+\[
+    k_1(x_{1/2},y_{0}) = k_1 \left( x_{0} + \frac{h_x}{2},y_{0} \right) = \left[
+        k_1 + \frac{h_x}{2} \pdv{k_1}{x} + \frac{h_x^2}{8} \pdv[2]{k_1}{x} + \frac{h_x^3}{48} \pdv[3]{k_1}{x}
+    \right]_{0,0} + O(h_x^4)
+\]
+\begin{multline*}
+    k_1(x_{1/2},y_{0}) \frac{u_{1,0} - u_{0,0}}{h_x} = \left[ k_1 \pdv{u}{x} \right]_{0,0} +
+    h_x \left[ \frac{1}{2} k_1 \pdv[2]{u}{x} + \frac{1}{2} \pdv{k_1}{x} \pdv{u}{x} \right]_{0,0} + \\
+    + h_x^2 \left[ \frac{1}{6} k_1 \pdv[3]{u}{x} + \frac{1}{4} \pdv{k_1}{x} \pdv[2]{u}{x} + \frac{1}{8} \pdv[2]{k_1}{x} \pdv{u}{x} \right]_{0,0} + \\
+    + h_x^3 \left[ \frac{1}{24} k_1 \pdv[4]{u}{x} + \frac{1}{12} \pdv{k_1}{x} \pdv[3]{u}{x} + \frac{1}{16} \pdv[2]{k_1}{x} \pdv[2]{u}{x} + \frac{1}{48} \pdv[3]{k_1}{x} \pdv{u}{x} \right]_{0,0} + O(h_x^4)
+\end{multline*}
+
+\[
+    u_{0,1} = u(x_{0}, y_{0} + h_y) = \left[ u + h_y \pdv{u}{y} + \frac{h_y^2}{2} \pdv[2]{u}{y} +
+    \frac{h_y^3}{6} \pdv[3]{u}{y} + \frac{h_y^4}{24} \pdv[4]{u}{y} \right]_{0,0} + O(h_y^5)
+\]
+\[
+    \frac{u_{0,1} - u_{0,0}}{h_y} = \left[ \pdv{u}{y} + \frac{h_y}{2} \pdv[2]{u}{y} +
+    \frac{h_y^2}{6} \pdv[3]{u}{y} + \frac{h_y^3}{24} \pdv[4]{u}{y} \right]_{0,0} + O(h_y^4)
+\]
+\[
+    k_2(x_{0},y_{1/2}) = k_2 \left( x_{i},y_{j} + \frac{h_y}{2} \right) = \left[
+        k_2 + \frac{h_y}{2} \pdv{k_2}{y} + \frac{h_y^2}{8} \pdv[2]{k_2}{y} + \frac{h_y^3}{48} \pdv[3]{k_2}{y}
+    \right]_{0,0} + O(h_y^4)
+\]
+\begin{multline*}
+    k_2(x_{0},y_{1/2}) \frac{u_{0,1} - u_{0,0}}{h_y} = \left[ k_2 \pdv{u}{y} \right]_{0,0} +
+    h_y \left[ \frac{1}{2} k_2 \pdv[2]{u}{y} + \frac{1}{2} \pdv{k_2}{y} \pdv{u}{y} \right]_{0,0} + \\
+    + h_y^2 \left[ \frac{1}{6} k_2 \pdv[3]{u}{y} + \frac{1}{4} \pdv{k_2}{y} \pdv[2]{u}{y} + \frac{1}{8} \pdv[2]{k_2}{y} \pdv{u}{y} \right]_{0,0} + \\
+    + h_y^3 \left[ \frac{1}{24} k_2 \pdv[4]{u}{y} + \frac{1}{12} \pdv{k_2}{y} \pdv[3]{u}{y} + \frac{1}{16} \pdv[2]{k_2}{y} \pdv[2]{u}{y} + \frac{1}{48} \pdv[3]{k_2}{y} \pdv{u}{y} \right]_{0,0} + O(h_y^4)
+\end{multline*}
+Получаем следующее разложение.
+\begin{multline*}
+    \frac{h_y}{2}  k_1(x_{1/2},y_{0}) \frac{u_{1,0} - u_{0,0}}{h_x} - \frac{h_y}{2} \left( \chi_1 u_{0,0} - g_1(y_{0}) \right) = \\
+    = \frac{h_y}{2} \left[ \begin{aligned}
+        & \left[ k_1 \pdv{u}{x} \right]_{0,0} +
+        h_x \left[ \frac{1}{2} k_1 \pdv[2]{u}{x} + \frac{1}{2} \pdv{k_1}{x} \pdv{u}{x} \right]_{0,0} + \\
+        & + h_x^2 \left[ \frac{1}{6} k_1 \pdv[3]{u}{x} + \frac{1}{4} \pdv{k_1}{x} \pdv[2]{u}{x} + \frac{1}{8} \pdv[2]{k_1}{x} \pdv{u}{x} \right]_{0,0} + \\
+        & + h_x^3 \left[ \frac{1}{24} k_1 \pdv[4]{u}{x} + \frac{1}{12} \pdv{k_1}{x} \pdv[3]{u}{x} + \frac{1}{16} \pdv[2]{k_1}{x} \pdv[2]{u}{x} + \frac{1}{48} \pdv[3]{k_1}{x} \pdv{u}{x} \right]_{0,0} + O(h_x^4) - \\
+        & - \left( \chi_1 u_{0,0} - g_1(y_{0}) \right)
+    \end{aligned} \right]
+\end{multline*}
+\begin{multline*}
+    \frac{h_x}{2}  k_2(x_{0},y_{1/2}) \frac{u_{0,1} - u_{0,0}}{h_y} - \frac{h_x}{2} \left( \chi_3 u_{0,0} - g_3(x_{0}) \right) = \\
+    = \frac{h_x}{2} \left[ \begin{aligned}
+        & \left[ k_2 \pdv{u}{y} \right]_{0,0} +
+        h_y \left[ \frac{1}{2} k_2 \pdv[2]{u}{y} + \frac{1}{2} \pdv{k_2}{y} \pdv{u}{y} \right]_{0,0} + \\
+        & + h_y^2 \left[ \frac{1}{6} k_2 \pdv[3]{u}{y} + \frac{1}{4} \pdv{k_2}{y} \pdv[2]{u}{y} + \frac{1}{8} \pdv[2]{k_2}{y} \pdv{u}{y} \right]_{0,0} + \\
+        & + h_y^3 \left[ \frac{1}{24} k_2 \pdv[4]{u}{y} + \frac{1}{12} \pdv{k_2}{y} \pdv[3]{u}{y} + \frac{1}{16} \pdv[2]{k_2}{y} \pdv[2]{u}{y} + \frac{1}{48} \pdv[3]{k_2}{y} \pdv{u}{y} \right]_{0,0} + O(h_y^4) - \\
+        & - \left( \chi_3 u_{0,0} - g_3(y_{0}) \right)
+    \end{aligned} \right]
+\end{multline*}
+Заметим, что
+\[ k_1 \pdv[2]{u}{x} + \pdv{k_1}{x} \pdv{u}{x} = \pdv{x} \left( k_1 \pdv{u}{x} \right) \]
+\[ k_2 \pdv[2]{u}{y} + \pdv{k_2}{y} \pdv{u}{y} = \pdv{y} \left( k_2 \pdv{u}{y} \right) \]
+Тогда
+\[
+    \begin{split}
+        \xi_{i,j} &= \frac{h_x}{2} \frac{h_y}{2} \cancelto{0}{\left[ f + \pdv{x} \left( k_1 \pdv{u}{x} \right) + \pdv{y} \left( k_2 \pdv{u}{y} \right) \right]_{0,0}} + \\
+        &+ \frac{h_y}{2} \cancelto{0}{\left[ k_1 \pdv{u}{x} + \left( \chi_1 u - g_1(y_{0}) \right) \right]_{0,0}} + \frac{h_x}{2} \cancelto{0}{\left[ k_2 \pdv{u}{y} + \left( \chi_3 u - g_3(x_{0}) \right) \right]_{0,0}} + \\
+        &+ \left[
+        \begin{aligned}
+            & + h_x^2 \frac{h_y}{2} \left[ \frac{1}{6} k_1 \pdv[3]{u}{x} + \frac{1}{4} \pdv{k_1}{x} \pdv[2]{u}{x} + \frac{1}{8} \pdv[2]{k_1}{x} \pdv{u}{x} \right]_{0,0} + \\
+            & + h_x^3 \frac{h_y}{2} \left[ \frac{1}{24} k_1 \pdv[4]{u}{x} + \frac{1}{12} \pdv{k_1}{x} \pdv[3]{u}{x} + \frac{1}{16} \pdv[2]{k_1}{x} \pdv[2]{u}{x} + \frac{1}{48} \pdv[3]{k_1}{x} \pdv{u}{x} \right]_{0,0} + O(h_x^4) + \\
+            & + \frac{h_x}{2} h_y^2 \left[ \frac{1}{6} k_2 \pdv[3]{u}{y} + \frac{1}{4} \pdv{k_2}{y} \pdv[2]{u}{y} + \frac{1}{8} \pdv[2]{k_2}{y} \pdv{u}{y} \right]_{0,0} + \\
+            & + \frac{h_x}{2} h_y^3 \left[ \frac{1}{24} k_2 \pdv[4]{u}{y} + \frac{1}{12} \pdv{k_2}{y} \pdv[3]{u}{y} + \frac{1}{16} \pdv[2]{k_2}{y} \pdv[2]{u}{y} + \frac{1}{48} \pdv[3]{k_2}{y} \pdv{u}{y} \right]_{0,0} + O(h_y^4) \\
+        \end{aligned}
+        \right]
+    \end{split}
+\]
+И порядок аппроксимации $p_x = 2 - 0 = 2$, $p_y = 2 - 0 = 2$.
+
+Получаем, что построенная разностная схема имеет \textit{второй}
+порядок аппроксимации.

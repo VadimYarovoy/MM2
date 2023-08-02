@@ -1,0 +1,27 @@
+# LaTeX auto-generated files
+*.aux
+*.log
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.bbl
+*.blg
+*.lot
+*.lof
+*.toc
+*.out
+
+# LaTeX build output
+*.pdf
+*.dvi
+*.ps
+
+# Editor backup files
+*~
+
+# LaTeX project-specific files (modify this according to your project's needs)
+project-specific-filename.tex
+
+# Ignore any subdirectories named 'build' or 'output' (optional)
+/build
+/output

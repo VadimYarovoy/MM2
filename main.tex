@@ -1,0 +1,78 @@
+% !TeX program = xelatex
+
+% !TeX spellcheck = en_US
+% !TeX spellcheck = ru_RU
+
+\documentclass[a4paper, 12pt]{article}
+
+\input{tex/preamble.tex}
+
+\begin{document}
+
+  \renewcommand*{\vec}[1]{\mathbf{#1}}
+  \newcommand{\Int}[2]{\int\limits_{#1}^{#2}}
+  \newcommand{\Inner}[1]{\! #1 \,}
+  \newcommand{\Dd}[1]{\dd #1}
+  \newcommand{\Ddd}[2]{\dd #1 \dd #2}
+  \newcommand{\MyVert}[1]{\Big\vert_{#1}}
+  \newcommand{\MyVvert}[2]{\Big\vert_{\begin{subarray}{l} #1 \\ #2 \end{subarray}}}
+
+  \newcommand{\Ttitle}[1]{\noindent\textbf{#1}}
+
+  \input{tex/styles.tikz}
+
+  \include{tex/titlepage.tex}
+  \setcounter{page}{2}
+  \tableofcontents
+
+  \newpage
+  \section*{Введение}\label{introduction}
+  \addcontentsline{toc}{section}{\nameref{introduction}}
+  \input{tex/intro.tex}
+
+  % done
+  \newpage
+  \section{Постановка задачи}
+  \input{tex/variant.tex}
+
+  \newpage
+  \section{Использованное ПО}
+  \input{tex/soft.tex}
+
+  \newpage
+  \section{Вывод разностной схемы}
+  \input{tex/fdm.tex}
+
+  % \newpage
+  % \section{Невязка разностной схемы}
+  % \input{tex/nevyazka.tex}
+
+  % \newpage
+  % \section{Запись СЛАУ}
+  % \input{tex/index.tex}
+
+  % \newpage
+  % \section{Метод сопряженных градиентов}
+  % \input{tex/conjgrad.tex}
+
+  % \newpage
+  % \section{Тестирование построенной модели}
+  % \input{tex/test.tex}
+
+  % \newpage
+  % \section*{Заключение}\label{conclusion}
+  % \addcontentsline{toc}{section}{\nameref{conclusion}}
+  % \input{tex/consl.tex}
+
+  % \newpage
+  % \section*{Приложение. Текст программы}\label{appendix-listing}
+  % \addcontentsline{toc}{section}{\nameref{appendix-listing}}
+
+  % \lstinputlisting[caption={main.py}]{lst/main.py}
+  % \lstinputlisting[caption={model.py}]{lst/model.py}
+  % \lstinputlisting[caption={sparse\_matrix.py}]{lst/sparse\_matrix.py}\
+  % \lstinputlisting[caption={linalg.py}]{lst/linalg.py}
+  % \lstinputlisting[caption={grid.py}]{lst/grid.py}
+  % \lstinputlisting[caption={utils.py}]{lst/utils.py}
+
+\end{document}

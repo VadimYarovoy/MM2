@@ -1,0 +1,64 @@
+\tikzset{
+  axes/.pic = {
+    \draw[solid, thick, color=black, -{Stealth[scale=2]}] (0, 0) -- (40, 0);
+    \draw[solid, thick, color=black, -{Stealth[scale=2]}] (0, 0) -- (0, 30);
+    \node[scale=5] at (39, 2) {x};
+    \node[scale=5] at (2, 29) {y};
+  },
+	grid/.pic = {
+    \draw (0, 0) rectangle (32, 24);
+
+    \draw (8, 0) -- (8, 24);
+    \draw (16, 0) -- (16, 24);
+    \draw (24, 0) -- (24, 24);
+
+    \draw (0, 6) -- (32, 6);
+    \draw (0, 12) -- (32, 12);
+    \draw (0, 18) -- (32, 18);
+  },
+  inner/.pic = {
+    \filldraw[red] (8, 6) circle (0.5);
+    \filldraw[red] (16, 6) circle (0.5);
+    \filldraw[red] (24, 6) circle (0.5);
+
+    \filldraw[red] (8, 12) circle (0.5);
+    \filldraw[red] (16, 12) circle (0.5);
+    \filldraw[red] (24, 12) circle (0.5);
+
+    \filldraw[red] (8, 18) circle (0.5);
+    \filldraw[red] (16, 18) circle (0.5);
+    \filldraw[red] (24, 18) circle (0.5);
+  },
+  left/.pic = {
+    \filldraw[red] (0, 6) circle (0.5);
+    \filldraw[red] (0, 12) circle (0.5);
+    \filldraw[red] (0, 18) circle (0.5);
+  },
+  right/.pic = {
+    \filldraw[red] (32, 6) circle (0.5);
+    \filldraw[red] (32, 12) circle (0.5);
+    \filldraw[red] (32, 18) circle (0.5);
+  },
+  bottom/.pic = {
+    \filldraw[red] (8, 0) circle (0.5);
+    \filldraw[red] (16, 0) circle (0.5);
+    \filldraw[red] (24, 0) circle (0.5);
+  },
+  top/.pic = {
+    \filldraw[red] (8, 24) circle (0.5);
+    \filldraw[red] (16, 24) circle (0.5);
+    \filldraw[red] (24, 24) circle (0.5);
+  },
+  leftbottom/.pic = {
+    \filldraw[red] (0, 0) circle (0.5);
+  },
+  rightbottom/.pic = {
+    \filldraw[red] (32, 0) circle (0.5);
+  },
+  righttop/.pic = {
+    \filldraw[red] (32, 24) circle (0.5);
+  },
+  lefttop/.pic = {
+    \filldraw[red] (0, 24) circle (0.5);
+  },
+}
