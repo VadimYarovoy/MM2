@@ -1,3 +1,4 @@
+% done
 В прямоугольнике $[a, b] \times [c, d]$ введем сетку с равномерным шагом $h_x$ и $h_y$.
 \[ h_x = \frac{b - a}{N_x} \]
 \[ h_y = \frac{d - c}{N_y} \]
@@ -10,6 +11,7 @@
 \[ y_{j+1/2} = \frac{y_{j+1} - y_j}{2},\quad 0 \leq j < N_y \]
 Теперь построим разностную схему в узлах основной сетки.
 
+% done
 \subsection{Аппроксимация во внутрениих точках}
 Проинтегрируем уравнение (\ref{main-equation}) во внутренних точках сетки.
 \[
@@ -40,42 +42,45 @@
   h_x h_y f_{i,j}
 \end{multline*}
 
+% done
 \subsection{Аппроксимация на левой границе}
-Проинтегрируем уравнение (\ref{main-equation}) на левой границе сетки.
+В качестве уравнения разностной схемы для $i = 0$ и $j = \overline{1,N_y-1}$ возьмем
+известное граничное условие.
+\[ u \MyVert{x = a} = g_1(y) \]
+\[ v_{0,j} = g_1(y_j) \]
+
+% done
+\subsection{Аппроксимация на правой границе}
+Проинтегрируем уравнение (\ref{main-equation}) на правой границе сетки.
 \[
   - \left[
-  \underbrace{ \Int{x_{0}}{x_{1/2}}\Int{y_{j-1/2}}{y_{j+1/2}} \Inner{\pdv{x}\left( k_1 \pdv{u}{x} \right)} \Ddd{x}{y} }_{I_1} +
-  \underbrace{ \Int{x_{0}}{x_{1/2}}\Int{y_{j-1/2}}{y_{j+1/2}} \Inner{\pdv{y}\left( k_2 \pdv{u}{y} \right)} \Ddd{x}{y} }_{I_2}
+  \underbrace{ \Int{x_{N_x-1/2}}{x_{N_x}}\Int{y_{j -1/2}}{y_{j + 1/2}} \Inner{\pdv{x}\left( k_1 \pdv{u}{x} \right)} \Ddd{x}{y} }_{I_1} +
+  \underbrace{ \Int{x_{N_x-1/2}}{x_{N_x}}\Int{y_{j -1/2}}{y_{j + 1/2}} \Inner{\pdv{y}\left( k_2 \pdv{u}{y} \right)} \Ddd{x}{y} }_{I_2}
   \right] =
-  \underbrace{ \Int{x_{0}}{x_{1/2}}\Int{y_{j-1/2}}{y_{j+1/2}} \Inner{f} \Ddd{x}{y} }_{I_3}
+  \underbrace{ \Int{x_{N_x-1/2}}{x_{N_x}}\Int{y_{j -1/2}}{y_{j + 1/2}} \Inner{f} \Ddd{x}{y} }_{I_3}
 \]
 Проинтегрируем левую часть один раз.
-\[ I_1 = \Int{y_{j-1/2}}{y_{j+1/2}} \Inner{k_1(x_{1/2},y) \pdv{u}{x} \MyVert{x = x_{1/2}}} \Dd{y} - \Int{y_{j-1/2}}{y_{j+1/2}} \Inner{k_1(x_{0},y) \pdv{u}{x} \MyVert{x = x_{0}}} \Dd{y} \]
-\[ I_2 = \Int{x_{0}}{x_{1/2}} \Inner{k_2(x,y_{j+1/2}) \pdv{u}{y} \MyVert{y = y_{j+1/2}}} \Dd{x} - \Int{x_{0}}{x_{1/2}} \Inner{k_2(x,y_{j-1/2}) \pdv{u}{y} \MyVert{y = y_{j-1/2}}} \Dd{x} \]
-Найдем интегралы с помощью формулы левых прямоугольников.
-\[ I_1 \approx h_y k_1(x_{1/2},y_{j}) \pdv{u}{x} \MyVvert{x = x_{1/2}}{y = y_{j}} - h_y k_1(x_{0},y_{j}) \pdv{u}{x} \MyVvert{x = x_{0}}{y = y_{j}} \]
-\[ I_2 \approx \frac{h_x}{2} k_2(x_{0},y_{j+1/2}) \pdv{u}{y} \MyVvert{x = x_{0}}{y = y_{j+1/2}} - \frac{h_x}{2} k_2(x_{0},y_{j-1/2}) \pdv{u}{y} \MyVvert{x = x_{0}}{y = y_{j-1/2}} \]
+\[ I_1 = \Int{y_{j -1/2}}{y_{j + 1/2}} \Inner{k_1(x_{{N_x}},y) \pdv{u}{x} \MyVert{x = x_{{N_x}}}} \Dd{y} - \Int{y_{j - 1/2}}{y_{j + 1/2}} \Inner{k_1(x_{N_x-1/2},y) \pdv{u}{x} \MyVert{x = x_{N_x-1/2}}} \Dd{y} \]
+\[ I_2 = \Int{x_{N_x-1/2}}{x_{{N_x}}} \Inner{k_2(x,y_{j + 1/2}) \pdv{u}{y} \MyVert{y = y_{j + 1/2}}} \Dd{x} - \Int{x_{N_x-1/2}}{x_{{N_x}}} \Inner{k_2(x,y_{j - 1/2}) \pdv{u}{y} \MyVert{y = y_{j -1/2}}} \Dd{x} \]
+Найдем интегралы с помощью формулы правых прямоугольников.
+\[ I_1 \approx h_y k_1(x_{{N_x}},y_{j}) \pdv{u}{x} \MyVvert{x = x_{{N_x}}}{y = y_{j}} - h_y k_1(x_{N_x-1/2},y_j) \pdv{u}{x} \MyVvert{x = x_{N_x-1/2}}{y = y_{j}} \]
+\[ I_2 \approx \frac{h_x}{2} k_2(x_{N_x},y_{j+1/2}) \pdv{u}{y} \MyVvert{x = x_{{N_x}}}{y = y_{j + 1/2}} - \frac{h_x}{2} k_2(x_{N_x},y_{j-1/2}) \pdv{u}{y} \MyVvert{x = x_{{N_x}}}{y = y_{j-1/2}} \]
 Теперь воспользуемся формулами численного дифференцирования и известным граничным условием.
-\[ I_1 \approx h_y k_1(x_{1/2},y_{j}) \frac{v_{1,j} - v_{0,j}}{h_x} - h_y \left( \chi_1 v_{0,j} - g_1(y_{j}) \right) \]
-\[ I_2 \approx \frac{h_x}{2} k_2(x_{0},y_{j+1/2}) \frac{v_{0,j+1} - v_{0,j}}{h_y} - \frac{h_x}{2} k_2(x_{0},y_{j-1/2}) \frac{v_{0,j} - v_{0,j-1}}{h_y} \]
-Также с помощью формул средних и левых прямоугольников найдем интеграл в правой части.
-\[ I_3 \approx \frac{h_x}{2} h_y f_{0,j} \]
-Получим уравнение разностной схемы для $i = 0$ и $j = \overline{1,N_y-1}$.
+\[ I_1 \approx h_y (- \chi_2 v_{{N_x},j} + g_2(y_j) ) - h_y k_1(x_{N_x-1/2},y_j) \frac{v_{{N_x},j} - v_{{N_x}-1,j}}{h_x} \]
+\[ I_2 \approx \frac{h_x}{2} k_2(x_{N_x},y_{j+1/2}) \frac{v_{{N_x},j+1} - v_{{N_x},j}}{h_y} - \frac{h_x}{2} k_2(x_{N_x},y_{j-1/2}) \frac{v_{{N_x},j} - v_{{N_x},j-1}}{h_y} \]
+Также с помощью формул средних и правых прямоугольников найдем интеграл в правой части.
+\[ I_3 \approx \frac{h_x}{2} h_y f_{N_x,j} \]
+Получим уравнение разностной схемы для $i = N_x$ и $j = \overline{1,N_y-1}$.
 \begin{multline*}
   - \left[
-  h_y k_1(x_{1/2},y_{j}) \frac{v_{1,j} - v_{0,j}}{h_x} - h_y \left( \chi_1 v_{0,j} - g_1(y_{j}) \right) + \right. \\
+    h_y (- \chi_2 v_{{N_x},j} + g_2(y_j) ) - h_y k_1(x_{N_x-1/2},y_j) \frac{v_{{N_x},j} - v_{{N_x}-1,j}}{h_x} + \right. \\
   \left. +
-  \frac{h_x}{2} k_2(x_{0},y_{j+1/2}) \frac{v_{0,j+1} - v_{0,j}}{h_y} - \frac{h_x}{2} k_2(x_{0},y_{j-1/2}) \frac{v_{0,j} - v_{0,j-1}}{h_y}
+  \frac{h_x}{2} k_2(x_{N_x},y_{j+1/2}) \frac{v_{{N_x},j+1} - v_{{N_x},j}}{h_y} - \frac{h_x}{2} k_2(x_{N_x},y_{j-1/2}) \frac{v_{{N_x},j} - v_{{N_x},j-1}}{h_y}
   \right] =
-  \frac{h_x}{2} h_y f_{0,j}
+  h_x \frac{h_x}{2} h_y f_{N_x,j}
 \end{multline*}
 
-\subsection{Аппроксимация на правой границе}
-В качестве уравнения разностной схемы для $i = N_x$ и $j = \overline{1,N_y-1}$ возьмем
-известное граничное условие.
-\[ u \MyVert{x = b} = g_2(y) \]
-\[ v_{N_x,j} = g_2(y_j) \]
-
+% done
 \subsection{Аппроксимация на нижней границе}
 Проинтегрируем уравнение (\ref{main-equation}) на нижней границе сетки.
 \[
@@ -106,6 +111,7 @@
   h_x \frac{h_y}{2} f_{i,0}
 \end{multline*}
 
+% done
 \subsection{Аппроксимация на верхней границе}
 Проинтегрируем уравнение (\ref{main-equation}) на верхней границе сетки.
 \[
@@ -136,76 +142,80 @@
   h_x \frac{h_y}{2} f_{i,N_y}
 \end{multline*}
 
+% done
 \subsection{Аппроксимация в левой нижней граничной точке}
-Проинтегрируем уравнение (\ref{main-equation}) в левой нижней граничной точке сетки.
-\[
-  - \left[
-  \underbrace{ \Int{x_{0}}{x_{1/2}}\Int{y_{0}}{y_{1/2}} \Inner{\pdv{x}\left( k_1 \pdv{u}{x} \right)} \Ddd{x}{y} }_{I_1} +
-  \underbrace{ \Int{x_{0}}{x_{1/2}}\Int{y_{0}}{y_{1/2}} \Inner{\pdv{y}\left( k_2 \pdv{u}{y} \right)} \Ddd{x}{y} }_{I_2}
-  \right] =
-  \underbrace{ \Int{x_{0}}{x_{1/2}}\Int{y_{0}}{y_{1/2}} \Inner{f} \Ddd{x}{y} }_{I_3}
-\]
-Проинтегрируем левую часть один раз.
-\[ I_1 = \Int{y_{0}}{y_{1/2}} \Inner{k_1(x_{1/2},y) \pdv{u}{x} \MyVert{x = x_{1/2}}} \Dd{y} - \Int{y_{0}}{y_{1/2}} \Inner{k_1(x_{0},y) \pdv{u}{x} \MyVert{x = x_{0}}} \Dd{y} \]
-\[ I_2 = \Int{x_{0}}{x_{1/2}} \Inner{k_2(x,y_{1/2}) \pdv{u}{y} \MyVert{y = y_{1/2}}} \Dd{x} - \Int{x_{0}}{x_{1/2}} \Inner{k_2(x,y_{0}) \pdv{u}{y} \MyVert{y = y_{0}}} \Dd{x} \]
-Найдем интегралы с помощью формулы левых прямоугольников.
-\[ I_1 \approx \frac{h_y}{2} k_1(x_{1/2},y_{0}) \pdv{u}{x} \MyVvert{x = x_{1/2}}{y = y_{0}} - \frac{h_y}{2} k_1(x_{0},y_{0}) \pdv{u}{x} \MyVvert{x = x_{0}}{y = y_{0}} \]
-\[ I_2 \approx \frac{h_x}{2}  k_2(x_{0},y_{1/2}) \pdv{u}{y} \MyVvert{x = x_{0}}{y = y_{1/2}} - \frac{h_x}{2}  k_2(x_{0},y_{0}) \pdv{u}{y} \MyVvert{x = x_{0}}{y = y_{0}} \]
-Теперь воспользуемся формулами численного дифференцирования и известными граничными условиями.
-\[ I_1 \approx \frac{h_y}{2}  k_1(x_{1/2},y_{0}) \frac{v_{1,0} - v_{0,0}}{h_x} - \frac{h_y}{2} \left( \chi_1 v_{0,0} - g_1(y_{0}) \right) \]
-\[ I_2 \approx \frac{h_x}{2}  k_2(x_{0},y_{1/2}) \frac{v_{0,1} - v_{0,0}}{h_y} - \frac{h_x}{2} \left( \chi_3 v_{0,0} - g_3(x_{0}) \right) \]
-Также с помощью формулы левых прямоугольников найдем интеграл в правой части.
-\[ I_3 \approx \frac{h_x}{2} \frac{h_y}{2} f_{0,0} \]
-Получим уравнение разностной схемы для $i = 0$ и $j = 0$.
-\begin{multline*}
-  - \left[
-  \frac{h_y}{2}  k_1(x_{1/2},y_{0}) \frac{v_{1,0} - v_{0,0}}{h_x} - \frac{h_y}{2} \left( \chi_1 v_{0,0} - g_1(y_{0}) \right) + \right. \\
-  \left. +
-  \frac{h_x}{2}  k_2(x_{0},y_{1/2}) \frac{v_{0,1} - v_{0,0}}{h_y} - \frac{h_x}{2} \left( \chi_3 v_{0,0} - g_3(x_{0}) \right)
-  \right] =
-  \frac{h_x}{2} \frac{h_y}{2} f_{0,0}
-\end{multline*}
+В качестве уравнения разностной схемы для $i = 0$ и $j = 0$ возьмем
+известное граничное условие.
+\[ u \MyVert{x = a} = g_1(y) \]
+\[ v_{0,0} = g_1(y_j) \]
 
+% done
 \subsection{Аппроксимация в правой нижней граничной точке}
-В качестве уравнения разностной схемы для $i = N_x$ и $j = 0$ возьмем
-известное граничное условие.
-\[ u \MyVert{x = b} = g_2(y) \]
-\[ v_{N_x,0} = g_2(y_0) \]
-
-\subsection{Аппроксимация в правой верхней граничной точке}
-В качестве уравнения разностной схемы для $i = N_x$ и $j = N_y$ возьмем
-известное граничное условие.
-\[ u \MyVert{x = b} = g_2(y) \]
-\[ v_{N_x,N_y} = g_2(y_{N_y}) \]
-
-\subsection{Аппроксимация в левой верхней граничной точке}
-Проинтегрируем уравнение (\ref{main-equation}) в левой верхней граничной точке сетки.
 \[
   - \left[
-  \underbrace{ \Int{x_{0}}{x_{1/2}}\Int{y_{N_y-1/2}}{y_{N_y}} \Inner{\pdv{x}\left( k_1 \pdv{u}{x} \right)} \Ddd{x}{y} }_{I_1} +
-  \underbrace{ \Int{x_{0}}{x_{1/2}}\Int{y_{N_y-1/2}}{y_{N_y}} \Inner{\pdv{y}\left( k_2 \pdv{u}{y} \right)} \Ddd{x}{y} }_{I_2}
+  \underbrace{ \Int{x_{N_x - 1/2}}{x_{N_x}}\Int{y_{0}}{y_{1/2}} \Inner{\pdv{x}\left( k_1 \pdv{u}{x} \right)} \Ddd{x}{y} }_{I_1} +
+  \underbrace{ \Int{x_{N_x - 1/2}}{x_{N_x}}\Int{y_{0}}{y_{1/2}} \Inner{\pdv{y}\left( k_2 \pdv{u}{y} \right)} \Ddd{x}{y} }_{I_2}
   \right] =
-  \underbrace{ \Int{x_{0}}{x_{1/2}}\Int{y_{N_y-1/2}}{y_{N_y}} \Inner{f} \Ddd{x}{y} }_{I_3}
+  \underbrace{ \Int{x_{N_x - 1/2}}{x_{N_x}}\Int{y_{0}}{y_{1/2}} \Inner{f} \Ddd{x}{y} }_{I_3}
 \]
 Проинтегрируем левую часть один раз.
-\[ I_1 = \Int{y_{N_y-1/2}}{y_{N_y}} \Inner{k_1(x_{1/2},y) \pdv{u}{x} \MyVert{x = x_{1/2}}} \Dd{y} - \Int{y_{N_y-1/2}}{y_{N_y}} \Inner{k_1(x_{0},y) \pdv{u}{x} \MyVert{x = x_{0}}} \Dd{y} \]
-\[ I_2 = \Int{x_{0}}{x_{1/2}} \Inner{k_2(x,y_{N_y}) \pdv{u}{y} \MyVert{y = y_{N_y}}} \Dd{x} - \Int{x_{0}}{x_{1/2}} \Inner{k_2(x,y_{N_y-1/2}) \pdv{u}{y} \MyVert{y = y_{N_y-1/2}}} \Dd{x} \]
-Найдем интегралы с помощью формул левых и правых прямоугольников.
-\[ I_1 \approx \frac{h_y}{2} k_1(x_{1/2},y_{N_y}) \pdv{u}{x} \MyVvert{x = x_{1/2}}{y = y_{N_y}} - \frac{h_y}{2} k_1(x_{0},y_{N_y}) \pdv{u}{x} \MyVvert{x = x_{0}}{y = y_{N_y}} \]
-\[ I_2 \approx \frac{h_x}{2} k_2(x_{0},y_{N_y}) \pdv{u}{y} \MyVvert{x = x_{0}}{y = y_{N_y}} - \frac{h_x}{2} k_2(x_{0},y_{N_y-1/2}) \pdv{u}{y} \MyVvert{x = x_{0}}{y = y_{N_y-1/2}} \]
-Теперь воспользуемся формулами численного дифференцирования и известными граничными условиями.
-\[ I_1 \approx \frac{h_y}{2} k_1(x_{1/2},y_{N_y}) \frac{v_{1,N_y} - v_{0,N_y}}{h_x} - \frac{h_y}{2} \left( \chi_1 v_{0,N_y} - g_1(y_{N_y}) \right) \]
-\[ I_2 \approx \frac{h_x}{2} \left( - \chi_4 v_{0,N_y} + g_4(x_0) \right) - \frac{h_x}{2} k_2(x_{0},y_{N_y-1/2}) \frac{v_{0,N_y} - v_{0,N_y-1}}{h_y} \]
+\[ I_1 = \Int{y_{0}}{y_{1/2}} \Inner{k_1(x_{N_x},y) \pdv{u}{x} \MyVert{x = N_x}} \Dd{y} - \Int{y_{0}}{y_{1/2}} \Inner{k_1(x_{N_x-1/2},y) \pdv{u}{x} \MyVert{x = x_{N_x-1/2}}} \Dd{y} \]
+\[ I_2 = \Int{x_{N_x - 1/2}}{x_{N_x}} \Inner{k_2(x,y_{1/2}) \pdv{u}{y} \MyVert{y = y_{1/2}}} \Dd{x} - \Int{x_{N_x - 1/2}}{x_{N_x}} \Inner{k_2(x,y_{0}) \pdv{u}{y} \MyVert{y = y_{0}}} \Dd{x} \]
+
+Найдем интегралы с помощью формулы левых и правых прямоугольников.
+\[ I_1 \approx \frac{h_y}{2} k_1(x_{N_x},y_{0}) \pdv{u}{x} \MyVvert{x = x_{N_x}}{y = y_{0}} - \frac{h_y}{2} k_1(x_{N_x-1/2},y_{0}) \pdv{u}{x} \MyVvert{x = x_{N_x-1/2}}{y = y_{0}} \]
+\[ I_2 \approx \frac{h_x}{2} k_2(x_{N_x},y_{1/2}) \pdv{u}{y} \MyVvert{x = x_{N_x}}{y = y_{1/2}} - \frac{h_x}{2} k_2(x_{N_x},y_{0}) \pdv{u}{y} \MyVvert{x = x_{N_x}}{y = y_{0}} \]
+Теперь воспользуемся формулами численного дифференцирования и известными граничным условием.
+\[ I_1 \approx \frac{h_y}{2} (- \chi_2 v_{N_x, 0} + g_2(y_{0})) - \frac{h_y}{2} k1(x_{N_x -1}, y_{0}) \frac{v_{N_x,0} - v_{N_x-1,0}}{h_x} \]
+\[ I_2 \approx \frac{h_x}{2} k_2(x_{N_x},y_{1/2}) \frac{v_{N_x,1} - v_{N_x,0}}{h_y} - \frac{h_x}{2} (\chi_3 v_{N_x, 0} + g_3(x_{N_x}))\]
 Также с помощью формул левых и правых прямоугольников найдем интеграл в правой части.
-\[ I_3 \approx \frac{h_x}{2} \frac{h_y}{2} f_{0,N_y} \]
-Получим уравнение разностной схемы для $i = 0$ и $j = N_y$.
+\[ I_3 \approx \frac{h_x}{2} \frac{h_y}{2} f_{N_x, 0} \]
+Получим уравнение разностной схемы для $i = N_x$ и $j = 0$.
 \begin{multline*}
   - \left[
-  \frac{h_y}{2} k_1(x_{1/2},y_{N_y}) \frac{v_{1,N_y} - v_{0,N_y}}{h_x} - \frac{h_y}{2} \left( \chi_1 v_{0,N_y} - g_1(y_{N_y}) \right) + \right. \\
+    \frac{h_y}{2} (- \chi_2 v_{N_x, 0} + g_2(y_{0})) - \frac{h_y}{2} k1(x_{N_x -1}, y_{0}) \frac{v_{N_x,0} - v_{N_x-1,0}}{h_x} + \right. \\
   \left. +
-  \frac{h_x}{2} \left( - \chi_4 v_{0,N_y} + g_4(x_0) \right) - \frac{h_x}{2} k_2(x_{0},y_{N_y-1/2}) \frac{v_{0,N_y} - v_{0,N_y-1}}{h_y}
+  \frac{h_x}{2} k_2(x_{N_x},y_{1/2}) \frac{v_{N_x,1} - v_{N_x,0}}{h_y} - \frac{h_x}{2} (\chi_3 v_{N_x, 0} + g_3(x_{N_x}))
   \right] =
-  \frac{h_x}{2} \frac{h_y}{2} f_{0,N_y}
+  \frac{h_x}{2} \frac{h_y}{2} f_{N_x, 0} 
 \end{multline*}
+
+% done
+\subsection{Аппроксимация в правой верхней граничной точке}
+Проинтегрируем уравнение (\ref{main-equation}) в правой верхней граничной точке.
+\[
+  - \left[
+  \underbrace{ \Int{x_{N_x - 1/2}}{N_x}\Int{y_{N_y-1/2}}{y_{N_y}} \Inner{\pdv{x}\left( k_1 \pdv{u}{x} \right)} \Ddd{x}{y} }_{I_1} +
+  \underbrace{ \Int{x_{N_x - 1/2}}{N_x}\Int{y_{N_y-1/2}}{y_{N_y}} \Inner{\pdv{y}\left( k_2 \pdv{u}{y} \right)} \Ddd{x}{y} }_{I_2}
+  \right] =
+  \underbrace{ \Int{x_{N_x - 1/2}}{N_x}\Int{y_{N_y-1/2}}{y_{N_y}} \Inner{f} \Ddd{x}{y} }_{I_3}
+\]
+Проинтегрируем левую часть один раз.
+\[ I_1 = \Int{y_{N_y-1/2}}{y_{N_y}} \Inner{k_1(x_{N_x},y) \pdv{u}{x} \MyVert{x = N_x}} \Dd{y} - \Int{y_{N_y-1/2}}{y_{N_y}} \Inner{k_1(x_{N_x-1/2},y) \pdv{u}{x} \MyVert{x = x_{N_x-1/2}}} \Dd{y} \]
+\[ I_2 = \Int{x_{N_x-1/2}}{x_{N_x}} \Inner{k_2(x,y_{N_y}) \pdv{u}{y} \MyVert{y = y_{N_y}}} \Dd{x} - \Int{N_x - 1/2}{N_x} \Inner{k_2(x,y_{N_y-1/2}) \pdv{u}{y} \MyVert{y = y_{N_y-1/2}}} \Dd{x} \]
+Найдем интегралы с помощью формулы правых прямоугольников.
+\[ I_1 \approx \frac{h_y}{2} k_1(x_{N_x},y_{N_y}) \pdv{u}{x} \MyVvert{x = x_{N_x}}{y = y_{N_y}} - \frac{h_y}{2} k_1(x_{N_x-1/2},y_{N_y}) \pdv{u}{x} \MyVvert{x = x_{N_x-1/2}}{y = y_{N_y}} \]
+\[ I_2 \approx \frac{h_x}{2} k_2(x_{N_x},y_{N_y}) \pdv{u}{y} \MyVvert{x = x_{N_x}}{y = y_{N_y}} - \frac{h_x}{2} k_2(x_{N_x},y_{N_y-1/2}) \pdv{u}{y} \MyVvert{x = x_{N_x}}{y = y_{N_y-1/2}} \]
+Теперь воспользуемся формулами численного дифференцирования и известными граничным условием.
+\[ I_1 \approx \frac{h_y}{2} (- \chi_2 v_{{N_x},N_y} + g_2(y_{N_y}) ) - \frac{h_y}{2} k_1(x_{N_x-1/2},y_{N_y}) \frac{v_{{N_x},N_y} - v_{{N_x}-1,N_y}}{h_x} \]
+\[ I_2 \approx \frac{h_x}{2} \left( - \chi_4 v_{N_x,N_y} + g_4(x_{N_x}) \right) - \frac{h_x}{2} k_2(x_{N_x},y_{N_y-1/2}) \frac{v_{N_x,N_y} - v_{N_x,N_y-1}}{h_y} \]
+Также с помощью формул средних и правых прямоугольников найдем интеграл в правой части.
+\[ I_3 \approx \frac{h_x}{2} \frac{h_y}{2} f_{N_x, N_y} \]
+Получим уравнение разностной схемы для $i = N_x$ и $j = N_y$.
+\begin{multline*}
+  - \left[
+    \frac{h_y}{2} (- \chi_2 v_{{N_x},N_y} + g_2(y_{N_y}) ) - \frac{h_y}{2} k_1(x_{N_x-1/2},y_{N_y}) \frac{v_{{N_x},N_y} - v_{{N_x}-1,N_y}}{h_x} + \right. \\
+  \left. +
+  \frac{h_x}{2} \left( - \chi_4 v_{N_x,N_y} + g_4(x_{N_x}) \right) - \frac{h_x}{2} k_2(x_{N_x},y_{N_y-1/2}) \frac{v_{N_x,N_y} - v_{N_x,N_y-1}}{h_y}
+  \right] =
+  \frac{h_x}{2} \frac{h_y}{2} f_{N_x, N_y}
+\end{multline*}
+
+% done
+\subsection{Аппроксимация в левой верхней граничной точке}
+В качестве уравнения разностной схемы для $i = 0$ и $j = N_y$ возьмем
+известное граничное условие.
+\[ u \MyVert{x = a} = g_1(y) \]
+\[ v_{0,N_y} = g_1(y_j) \]
 
 Полученную разностную схему будем использовать для решения исходного ДУ.

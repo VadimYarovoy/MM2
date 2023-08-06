@@ -8,6 +8,7 @@
 и тогда
 \[ 0 \leq m < (N_x + 1) (N_y + 1) \]
 
+% done
 \subsection{Запись для внутренних точек}
 Перепишем уравнения для $i = \overline{1,N_x-1}$ и $j = \overline{1,N_y-1}$ с использовнием нового индекса.
 \begin{multline*}
@@ -34,10 +35,10 @@
 \[ d_m = -\frac{h_y}{h_x} k_1(x_{i+1/2},y_{j}) \]
 \[ e_m = -\frac{h_x}{h_y} k_2(x_{i},y_{j+1/2}) \]
 \[ g_m = h_x h_y f_{i,j} \]
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.5\textwidth]{img/inner-crop.pdf}
-\end{figure}
+% \begin{figure}[H]
+%     \centering
+%     \includegraphics[width=0.5\textwidth]{img/inner-crop.pdf}
+% \end{figure}
 
 \subsection{Запись для левой границы}
 Перепишем уравнения для $i = 0$ и $j = \overline{1,N_y-1}$ с использовнием нового индекса.
@@ -63,10 +64,10 @@
 \[ d_m = -\frac{h_y}{h_x} k_1(x_{1/2},y_{j}) \]
 \[ e_m = -\frac{h_x}{2 h_y} k_2(x_{0},y_{j+1/2}) \]
 \[ g_m = \frac{h_x}{2} h_y f_{0,j} + h_y g_1(y_j) \]
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.5\textwidth]{img/left-crop.pdf}
-\end{figure}
+% \begin{figure}[H]
+%     \centering
+%     \includegraphics[width=0.5\textwidth]{img/left-crop.pdf}
+% \end{figure}
 
 \subsection{Запись для правой границы}
 Перепишем уравнения для $i = N_x$ и $j = \overline{1,N_y-1}$ с использовнием нового индекса.
@@ -75,10 +76,10 @@
 Тогда получаем формулы для коэффициентов системы
 \[ c_m = 1 \]
 \[ g_m = g_2(y_j) \]
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.5\textwidth]{img/right-crop.pdf}
-\end{figure}
+% \begin{figure}[H]
+%     \centering
+%     \includegraphics[width=0.5\textwidth]{img/right-crop.pdf}
+% \end{figure}
 
 \subsection{Запись для нижней границы}
 Перепишем уравнения для $i = \overline{1,N_x-1}$ и $j = 0$ с использовнием нового индекса.
@@ -104,10 +105,10 @@
 \[ d_m = -\frac{h_y}{2 h_x} k_1(x_{i+1/2},y_0) \]
 \[ e_m = -\frac{h_x}{h_y} k_2(x_i,y_{1/2}) \]
 \[ g_m = h_x \frac{h_y}{2} f_{i,0} + h_x g_3(x_i) \]
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.5\textwidth]{img/bottom-crop.pdf}
-\end{figure}
+% \begin{figure}[H]
+%     \centering
+%     \includegraphics[width=0.5\textwidth]{img/bottom-crop.pdf}
+% \end{figure}
 
 \subsection{Запись для верхней границы}
 Перепишем уравнения для $i = \overline{1,N_x-1}$ и $j = N_y$ с использовнием нового индекса.
@@ -133,10 +134,10 @@
 \[ c_m = \frac{h_x}{h_y} k_2(x_i,y_{N_y-1/2}) + \frac{h_y}{2 h_x} k_1(x_{i-1/2},y_{N_y}) + \frac{h_y}{2 h_x} k_1(x_{i+1/2},y_{N_y}) + h_x \chi_4 \]
 \[ d_m = -\frac{h_y}{2 h_x} k_1(x_{i+1/2},y_{N_y}) \]
 \[ g_m = h_x \frac{h_y}{2} f_{i,N_y} + h_x g_4(x_i) \]
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.5\textwidth]{img/top-crop.pdf}
-\end{figure}
+% \begin{figure}[H]
+%     \centering
+%     \includegraphics[width=0.5\textwidth]{img/top-crop.pdf}
+% \end{figure}
 
 \subsection{Запись для левой нижней граничной точки}
 Перепишем уравнения для $i = 0$ и $j = 0$ с использовнием нового индекса.
@@ -160,10 +161,10 @@
 \[ d_m = -\frac{h_y}{2 h_x} k_1(x_{1/2},y_{0}) \]
 \[ e_m = -\frac{h_x}{2 h_y} k_2(x_{0},y_{1/2}) \]
 \[ g_m = \frac{h_x}{2} \frac{h_y}{2} f_{0,0} + \frac{h_y}{2} g_1(y_0) + \frac{h_x}{2} g_3(x_0) \]
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.5\textwidth]{img/left-bottom-crop.pdf}
-\end{figure}
+% \begin{figure}[H]
+%     \centering
+%     \includegraphics[width=0.5\textwidth]{img/left-bottom-crop.pdf}
+% \end{figure}
 
 \subsection{Запись для правой нижней граничной точки}
 Перепишем уравнения для $i = N_x$ и $j = 0$ с использовнием нового индекса.
@@ -172,10 +173,10 @@
 Тогда получаем формулы для коэффициентов системы
 \[ c_m = 1 \]
 \[ g_m = g_2(y_0) \]
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.5\textwidth]{img/right-bottom-crop.pdf}
-\end{figure}
+% \begin{figure}[H]
+%     \centering
+%     \includegraphics[width=0.5\textwidth]{img/right-bottom-crop.pdf}
+% \end{figure}
 
 \subsection{Запись для правой верхней граничной точки}
 Перепишем уравнения для $i = N_x$ и $j = N_y$ с использовнием нового индекса.
@@ -184,10 +185,10 @@
 Тогда получаем формулы для коэффициентов системы
 \[ c_m = 1 \]
 \[ g_m = g_2(y_{N_y}) \]
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.5\textwidth]{img/right-top-crop.pdf}
-\end{figure}
+% \begin{figure}[H]
+%     \centering
+%     \includegraphics[width=0.5\textwidth]{img/right-top-crop.pdf}
+% \end{figure}
 
 \subsection{Запись для левой верхней граничной точки}
 Перепишем уравнения для $i = 0$ и $j = N_y$ с использовнием нового индекса.
@@ -212,30 +213,30 @@
 \[ c_m = \frac{h_x}{2 h_y} k_2(x_{0},y_{N_y-1/2}) + \frac{h_y}{2 h_x} k_1(x_{1/2},y_{N_y}) + \frac{h_y}{2} \chi_1 + \frac{h_x}{2} \chi_4 \]
 \[ d_m = -\frac{h_y}{2 h_x} k_1(x_{1/2},y_{N_y}) \]
 \[ g_m = \frac{h_x}{2} \frac{h_y}{2} f_{0,N_y} + \frac{h_y}{2} g_1(y_{N_y}) + \frac{h_x}{2} g_4(x_0) \]
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.5\textwidth]{img/left-top-crop.pdf}
-\end{figure}
+% \begin{figure}[H]
+%     \centering
+%     \includegraphics[width=0.5\textwidth]{img/left-top-crop.pdf}
+% \end{figure}
 
 Удалим лишние элементы и получим систему с симметричной матрицей.
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.5\textwidth]{img/extra-cells-crop.pdf}
-\end{figure}
+% \begin{figure}[H]
+%     \centering
+%     \includegraphics[width=0.5\textwidth]{img/extra-cells-crop.pdf}
+% \end{figure}
 Такую систему в соотвествии с вариантом работы будем решать методом сопряженных градиентов.
 
 \subsection{Хранение матрицы системы}
 При инициализации системы матрица хранится в координатном виде (\textbf{COO}rdinate format),
 так как это кардинально упрощает добавление новых элементов.
-\begin{figure}[H]
-    \centering
-    \fbox{ \includegraphics[width=0.95\textwidth]{img/sparse1.pdf} }
-    \caption{Инициализация матрицы}
-\end{figure}
+% \begin{figure}[H]
+%     \centering
+%     \fbox{ \includegraphics[width=0.95\textwidth]{img/sparse1.pdf} }
+%     \caption{Инициализация матрицы}
+% \end{figure}
 После инициализации матрица переводится в сжатый разреженный строчный вид (\textbf{C}ompressed \textbf{S}parse \textbf{R}ow format),
 и дальше сохраняет этот вид при всех последующих операциях с ней (при этом матрица становится неизменяемой).
-\begin{figure}[H]
-    \centering
-    \fbox{ \includegraphics[width=0.95\textwidth]{img/sparse2.pdf} }
-    \caption{Перевод матрицы в новый вид}
-\end{figure}
+% \begin{figure}[H]
+%     \centering
+%     \fbox{ \includegraphics[width=0.95\textwidth]{img/sparse2.pdf} }
+%     \caption{Перевод матрицы в новый вид}
+% \end{figure}
